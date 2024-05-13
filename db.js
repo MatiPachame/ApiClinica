@@ -1,12 +1,12 @@
 //import('mysql');
-const mysql = require('mysql');
+var mysql = require('mysql');
 
 var conexion = mysql.createConnection({
     host: 'mysql.db.mdbgo.com',
     user: 'matipachame_matipachame',
     password: 'ITBpachame2024!**',
     database: 'matipachame_clinica',
-    port: 3306,
+    port: 3306
 });
 
 function conectar(){
