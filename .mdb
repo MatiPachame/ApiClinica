@@ -1,0 +1,10 @@
+{
+  "projectName": "apiclinica",
+  "meta": {
+    "type": "backend"
+  },
+  "backend": {
+    "platform": "node17"
+  },
+  "hash": "2850bdc8"
+}
