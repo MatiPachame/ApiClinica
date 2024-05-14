@@ -28,6 +28,13 @@ app.post('/login/', (req,res)  => {
 
 });
 
+app.post('/insertar', (req, res) => {
+
+    var usuario = req.body;
+    aplicacion.insertar(usuario, res);
+
+})
+
 app.post('/leer/', (req,res)  => {
 
 
@@ -36,8 +43,15 @@ app.post('/leer/', (req,res)  => {
 
 });
 
+app.delete('/borrar/', (req,res) => {
 
-app.listen(process.env.PORT || 7200, ()=> {
+    var usuario = req.body;
+    aplicacion.borrar(usuario, res);
+
+})
+
+
+app.listen(process.env.PORT || 3000, ()=> {
 
     console.log('escuchando el puerto');
 

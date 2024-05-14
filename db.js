@@ -28,3 +28,43 @@ exports.buscarPersonas= function(respuesta){
     });
 }
 
+exports.insertarPersona = function(usuario, retornar){
+    conectar();
+
+    var sql = "INSERT into usuario(nombre,apellido,fec_nac,usuario,password,tipo_usuario)";
+    sql= sql + " values ('" + usuario.nombre + "',";
+    sql= sql + "'" + usuario.apellido + "',";
+    sql= sql + "'" + usuario.nacimiento + "',";
+    sql= sql + "'" + usuario.usuario + "',";
+    sql= sql + "'" + usuario.password + "',";
+    sql= sql + "'" + usuario.tipo_usuario + "')";
+    
+    conexion.query(sql,
+        function(err, resultado, filas){
+           if(err) throw err;
+           console.log(resultado);
+           
+           retornar(resultado);
+   
+       } );
+
+
+}
+
+exports.borrarPersona = function(usuario, retornar){
+    conectar();
+    var sql = "DELETE from usuario WHERE usuario = ";
+    sql = sql + "'" + usuario.usuario + "')";
+
+    conexion.query(sql,
+        function(err, resultado, filas){
+           if(err) throw err;
+           console.log(resultado);
+           
+           retornar(resultado);
+   
+       } );
+
+
+}
+
