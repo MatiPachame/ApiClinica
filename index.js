@@ -1,10 +1,13 @@
 var express = require('express')
+var cors = require('cors')
 var aplicacion = require('./aplicacion')
+
 
 
 
 var app = express();
 app.use(express.json());
+app.use(cors()); 
 
 
 
@@ -19,11 +22,13 @@ app.post('/login/', (req,res)  => {
     var usuario = req.body;
 
     aplicacion.leer(usuario, res);
-    if(usuario.password == usuario.usuario){
-        res.json({login:'exitoso'});
-    } else {
-        res.json({login:'fallo'});
-    }
+    // if(usuario.usuario == res.usuario){
+    //     res.json({login:'exitoso'});
+    // } else {
+    //     res.json({login:'fallo'});
+    // }
+
+    console.log(res);
 
 
 });
