@@ -2,16 +2,16 @@ var db = require('./db');
 
 exports.leer = function(usuario,res){
 
-    db.buscarPersonas(  ()=> res.json(datos)  );
-
-    return datos;
+    db.buscarPersonas(datos => {
+        res.json(validarusuario(datos,usuario))
+    } );
 
 }
 
 function validarusuario(datos, usuario) {
     for (i = 0; i < datos.length; i++) {
         element = datos[i];
-        if (element.Usuario == usuario.usuario && element.Password == usuario.password)
+        if (element.usuario == usuario.usuario && element.password == usuario.password)
             return element;
 
     };
