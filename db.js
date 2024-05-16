@@ -58,7 +58,7 @@ exports.insertarPersona = function(usuario, retornar){
 exports.borrarPersona = function(usuario, retornar){
     conectar();
     var sql = "DELETE from usuario WHERE usuario = ";
-    sql = sql + "'" + usuario.usuario + "')";
+    sql = sql + "'" + usuario.usuario + "'";
 
     conexion.query(sql,
         function(err, resultado, filas){
