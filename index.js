@@ -36,6 +36,9 @@ app.post('/login/', (req,res)  => {
 app.post('/insertar', (req, res) => {
 
     var usuario = req.body;
+
+    
+
     aplicacion.insertar(usuario, res);
 
 })
