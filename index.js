@@ -7,13 +7,23 @@ var aplicacion = require('./aplicacion')
 
 var app = express();
 app.use(express.json());
-app.use(cors()); 
+app.use(cors());
+
+
 
 
 
 app.get('/prueba/', (req, res) => {
 
     res.send("hola mundo");
+
+});
+
+app.get('/autorizar_medicos', (req, res) => {
+
+
+
+    res.send(aplicacion.autorizar());
 
 });
 
@@ -40,6 +50,8 @@ app.post('/insertar', (req, res) => {
     
 
     aplicacion.insertar(usuario, res);
+
+    
 
 })
 

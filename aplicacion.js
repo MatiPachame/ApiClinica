@@ -8,6 +8,7 @@ exports.leer = function(usuario,res){
 
 }
 
+
 function validarusuario(datos, usuario) {
     for (i = 0; i < datos.length; i++) {
         element = datos[i];
