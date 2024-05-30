@@ -6,11 +6,15 @@ var aplicacion = require('./aplicacion')
 
 
 var app = express();
-app.use(express.json());
+
+// Configuración del límite de tamaño
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
+//app.use(express.json());
+
+
+
 app.use(cors());
-
-
-
 
 
 app.get('/prueba/', (req, res) => {
@@ -19,11 +23,11 @@ app.get('/prueba/', (req, res) => {
 
 });
 
-app.get('/autorizar_medicos', (req, res) => {
+app.get('/autorizar_usuarios', (req, res) => {
 
+    var usuario = req.body;
 
-
-    res.send(aplicacion.autorizar());
+    res.json(aplicacion.buscarUsuarios(usuario, res));
 
 });
 

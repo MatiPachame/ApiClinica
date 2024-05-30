@@ -39,6 +39,15 @@ exports.buscarPersonas= function(respuesta){
     });
 }
 
+exports.buscarUsuariosNoAutorizados = function(respuesta){
+    conectar();
+    conexion.query("SELECT * FROM usuario WHERE autorizado = false", function(err,resultado,filas){
+        if(err) throw err;
+        console.log(resultado);
+        respuesta(resultado);
+    });
+}
+
 exports.insertarPersona = function(usuario, retornar){
     pool.getConnection(function (err, conexion) {
         if (err) {

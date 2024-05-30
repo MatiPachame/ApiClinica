@@ -9,6 +9,8 @@ exports.leer = function(usuario,res){
 }
 
 
+
+
 function validarusuario(datos, usuario) {
     for (i = 0; i < datos.length; i++) {
         element = datos[i];
@@ -18,6 +20,20 @@ function validarusuario(datos, usuario) {
     };
 
     return null;
+
+}
+
+exports.buscarUsuarios = function(usuario,res){
+    
+    return new Promise((resolve,reject) =>{
+        db.buscarUsuariosNoAutorizados((err,resultado) =>{
+            if(err) {
+                reject(err);
+            } else {
+                resolve(resultado);
+            }
+        })
+    });
 
 }
 
@@ -32,4 +48,6 @@ exports.borrar = function(usuario, res){
     db.borrarPersona( usuario, datos => {res.json(datos)});
     
 }
+
+
 
