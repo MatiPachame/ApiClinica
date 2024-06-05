@@ -1,6 +1,13 @@
 var db = require('./db');
+var jwt = require(('jsonwebtoken'));
+
+
 
 exports.leer = function(usuario,res){
+
+    // db.buscarPersonas(datos => {
+    //     res.json(crearJSON(validarusuario(datos,usuario)))
+    // } );
 
     db.buscarPersonas(datos => {
         res.json(validarusuario(datos,usuario))
@@ -49,5 +56,16 @@ exports.borrar = function(usuario, res){
     
 }
 
+function crearJSON(usuario){
+
+    data= {data:usuario,token : jwt.sign({
+
+        data:usuario,
+        exp:Math.floor(Date.now() / 1000) + (60 * 60),
+
+
+    }, "clavesupersecreta")}
+    return data;        
+}
 
 

@@ -1,6 +1,7 @@
 var express = require('express')
 var cors = require('cors')
 var aplicacion = require('./aplicacion')
+var jwr = require('jsonwebtoken');
 
 
 
@@ -11,11 +12,24 @@ var app = express();
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 //app.use(express.json());
-
-
-
 app.use(cors());
 
+//Probar el token
+// app.post('/probar/', (req,res) => {
+
+
+//     var token=req.headers.authorization;
+
+//     if ((!token) || token.indexOf("Bearer ") == -1) res.sendStatus(401);
+//     try {
+//         var usuario =  jwt.verify(token.replace("Bearer ", ""), "clavesupersecreta");
+//         res.json(JSON.stringify(usuario));
+//     } catch (error) {
+//          res.sendStatus(401);
+//     }
+
+
+// });
 
 app.get('/prueba/', (req, res) => {
 
@@ -23,6 +37,7 @@ app.get('/prueba/', (req, res) => {
 
 });
 
+//GET de autorizar los usuario medicos o administradores
 app.get('/autorizar_usuarios', (req, res) => {
 
     var usuario = req.body;
@@ -31,22 +46,19 @@ app.get('/autorizar_usuarios', (req, res) => {
 
 });
 
+//POST para login de usuarios
 app.post('/login/', (req,res)  => {
 
     var usuario = req.body;
 
     aplicacion.leer(usuario, res);
-    // if(usuario.usuario == res.usuario){
-    //     res.json({login:'exitoso'});
-    // } else {
-    //     res.json({login:'fallo'});
-    // }
 
     console.log(res);
 
 
 });
 
+//POST para el registro
 app.post('/insertar', (req, res) => {
 
     var usuario = req.body;
@@ -59,14 +71,16 @@ app.post('/insertar', (req, res) => {
 
 })
 
-app.post('/leer/', (req,res)  => {
+
+// app.post('/leer/', (req,res)  => {
 
 
-    var usuario = req.body;
-    res.json(usuario.nombre);
+//     var usuario = req.body;
+//     res.json(usuario.nombre);
 
-});
+// });
 
+//DELETE para borrar usuarios
 app.delete('/borrar/', (req,res) => {
 
     var usuario = req.body;
