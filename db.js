@@ -39,13 +39,18 @@ exports.buscarPersonas= function(respuesta){
     });
 }
 
-exports.buscarUsuariosNoAutorizados = function(respuesta){
+exports.buscarUsuariosNoAutorizados = function(){
     conectar();
-    conexion.query("SELECT * FROM usuario WHERE autorizado = false", function(err,resultado,filas){
-        if(err) throw err;
-        console.log(resultado);
-        respuesta(resultado);
+
+    return new Promise((resolve, reject) => {
+        conexion.query("SELECT * FROM usuario WHERE tipo_usuario != 1", (error,results) =>{
+            if(error){
+                return reject;
+            }
+             resolve(results);   
+        });
     });
+   
 }
 
 exports.insertarPersona = function(usuario, retornar){

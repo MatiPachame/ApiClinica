@@ -30,19 +30,16 @@ function validarusuario(datos, usuario) {
 
 }
 
-exports.buscarUsuarios = function(usuario,res){
+exports.buscarUsuarios = async(req,res) =>{
     
-    return new Promise((resolve,reject) =>{
-        db.buscarUsuariosNoAutorizados((err,resultado) =>{
-            if(err) {
-                reject(err);
-            } else {
-                resolve(resultado);
-            }
-        })
-    });
+    try {
+        const data = await db.buscarUsuariosNoAutorizados();
+        res.json(data); // Enviar datos como JSON
+      } catch (error) {
+        res.status(500).json({ error: 'Error al obtener los datos' }); // Enviar error como JSON
+      }
 
-}
+};
 
 exports.insertar = function (usuario, res) {
 

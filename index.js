@@ -37,12 +37,10 @@ app.get('/prueba/', (req, res) => {
 
 });
 
-//GET de autorizar los usuario medicos o administradores
-app.get('/autorizar_usuarios', (req, res) => {
+//POST de autorizar los usuario medicos o administradores
+app.post('/autorizar_usuarios', (req, res) => {
 
-    var usuario = req.body;
-
-    res.json(aplicacion.buscarUsuarios(usuario, res));
+    aplicacion.buscarUsuarios(req,res);
 
 });
 
