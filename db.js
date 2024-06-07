@@ -53,6 +53,26 @@ exports.buscarUsuariosNoAutorizados = function(){
    
 }
 
+exports.verificarUsuarioExistente = function (usuario, callback) {
+        conectar();
+
+        const sql = "SELECT * FROM usuario WHERE usuario = ? AND password = ?";
+        const values = [usuario.usuario, usuario.password];
+
+        conexion.query(sql, values, function (err, results) {
+
+            if (err) {
+                return callback(err);
+            }
+
+            if (results.length > 0) {
+                return callback(null, true); // Usuario y password ya existen
+            } else {
+                return callback(null, false); // Usuario y password no existen
+            }
+        });  
+};
+
 exports.insertarPersona = function(usuario, retornar){
     pool.getConnection(function (err, conexion) {
         if (err) {
@@ -162,80 +182,6 @@ exports.insertarPersona = function(usuario, retornar){
             });
         });
     });
-//     conexion.beginTransaction(function (err) {
-//         if (err) {
-//             return retornar(err);
-//         }
-
-//         var sql = "INSERT INTO usuario (nombre, apellido, mail, fec_nac, usuario, password, tipo_usuario, autorizado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-//         var values = [usuario.nombre, usuario.apellido, usuario.mail, usuario.nacimiento, usuario.usuario, usuario.password, usuario.tipo_usuario, usuario.autorizado];
-
-//         conexion.query(sql, values, function (err, resultado) {
-//             if (err) {
-//                 return conexion.rollback(function () {
-//                     return retornar(err);
-//                 });
-//             }
-
-//             const usuarioId = resultado.insertId;
-
-//             if (usuario.tipo_usuario === 2) {
-
-//                 var sqlMedico = "INSERT INTO medico (id_usuario, especialidad, dias_atencion, horarios_atencion, especialidad_foto) VALUES (?, ?, ?, ?, ?)";
-//                 var valuesMedico = [usuarioId, usuario.especialidad, diasAtencionStr, usuario.horario_atencion, usuario.especialidad_foto];
-
-//                 conexion.query(sqlMedico, valuesMedico, function (err, resultadoMedico) {
-//                     if (err) {
-//                         return conexion.rollback(function () {
-//                             return retornar(err);
-//                         });
-//                     }
-
-//                     conexion.commit(function (err) {
-//                         if (err) {
-//                             return conexion.rollback(function () {
-//                                 return retornar(err);
-//                             });
-//                         }
-
-//                         console.log('Inserción exitosa en ambas tablas');
-//                         return retornar(null, resultadoMedico);
-//                     });
-//                 });
-//             } else {
-//                 conexion.commit(function (err) {
-//                     if (err) {
-//                         return conexion.rollback(function () {
-//                             return retornar(err);
-//                         });
-//                     }
-
-//                     console.log('Inserción exitosa en la tabla usuario');
-//                     return retornar(null, resultado);
-//                 });
-//             }
-//         });
-//     });
-    
-// };
-
-// exports.borrarPersona = function(usuario, retornar){
-//     conectar();
-//     var sql = "DELETE from usuario WHERE usuario = ";
-//     sql = sql + "'" + usuario.usuario + "'";
-
-//     conexion.query(sql,
-//         function(err, resultado, filas){
-//            if(err) throw err;
-//            console.log(resultado);
-           
-//            retornar(resultado);
-   
-//        } );
-
-
-
-
 
 }
 

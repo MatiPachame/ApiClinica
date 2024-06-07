@@ -38,7 +38,7 @@ app.get('/prueba/', (req, res) => {
 });
 
 //POST de autorizar los usuario medicos o administradores
-app.post('/autorizar_usuarios', (req, res) => {
+app.post('/get_usuarios_autorizar', (req, res) => {
 
     aplicacion.buscarUsuarios(req,res);
 
