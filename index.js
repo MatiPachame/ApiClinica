@@ -61,13 +61,17 @@ app.post('/insertar', (req, res) => {
 
     var usuario = req.body;
 
-    
-
     aplicacion.insertar(usuario, res);
-
     
-
 })
+
+app.post('/autorizacion_usuario' , (req,res) => {
+
+    var usuario = req.body;
+
+    aplicacion.autorizacion(usuario,res);
+
+});
 
 
 // app.post('/leer/', (req,res)  => {

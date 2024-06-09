@@ -55,6 +55,14 @@ exports.insertar = function (usuario, res) {
     });
 }
 
+exports.autorizacion = function(usuario,res){
+
+    db.AutorizacionUsuario(datos => {
+        res.json(validarusuario(datos,usuario))
+    });
+
+}
+
 exports.borrar = function(usuario, res){
 
     db.borrarPersona( usuario, datos => {res.json(datos)});

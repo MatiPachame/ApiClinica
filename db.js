@@ -185,3 +185,17 @@ exports.insertarPersona = function(usuario, retornar){
 
 }
 
+exports.AutorizacionUsuario = function(respuesta){
+    conectar();
+
+    const sql = "UPDATE usuario SET autorizado = ? WHERE usuario = ? AND password = ?;";
+    const values = [usuario.autorizado, usuario.usuario, usuario.password];
+
+
+    conexion.query(sql, values, function (err, resultado) {
+        if(err) throw err;
+        console.log(resultado);
+        respuesta(resultado);
+    });
+}
+
