@@ -57,8 +57,8 @@ exports.insertar = function (usuario, res) {
 
 exports.autorizacion = function(usuario,res){
 
-    db.AutorizacionUsuario(datos => {
-        res.json(validarusuario(datos,usuario))
+    db.AutorizacionUsuario(usuario, datos => {
+        res.json(datos);
     });
 
 }

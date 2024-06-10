@@ -56,8 +56,8 @@ exports.buscarUsuariosNoAutorizados = function(){
 exports.verificarUsuarioExistente = function (usuario, callback) {
         conectar();
 
-        const sql = "SELECT * FROM usuario WHERE usuario = ? AND password = ?";
-        const values = [usuario.usuario, usuario.password];
+        const sql = "SELECT * FROM usuario WHERE usuario = ? AND password = ? OR mail = ?";
+        const values = [usuario.usuario, usuario.password, usuario.mail];
 
         conexion.query(sql, values, function (err, results) {
 
@@ -185,7 +185,7 @@ exports.insertarPersona = function(usuario, retornar){
 
 }
 
-exports.AutorizacionUsuario = function(respuesta){
+exports.AutorizacionUsuario = function(usuario, respuesta){
     conectar();
 
     const sql = "UPDATE usuario SET autorizado = ? WHERE usuario = ? AND password = ?;";
