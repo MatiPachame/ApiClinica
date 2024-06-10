@@ -85,8 +85,8 @@ exports.insertarPersona = function(usuario, retornar){
                 return retornar(err);
             }
 
-            var sql = "INSERT INTO usuario (nombre, apellido, mail, fec_nac, usuario, password, tipo_usuario, autorizado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            var values = [usuario.nombre, usuario.apellido, usuario.mail, usuario.nacimiento, usuario.usuario, usuario.password, usuario.tipo_usuario, usuario.autorizado];
+            var sql = "INSERT INTO usuario (nombre, apellido, mail, fec_nac, usuario, password, tipo_usuario,perfil_foto, autorizado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            var values = [usuario.nombre, usuario.apellido, usuario.mail, usuario.nacimiento, usuario.usuario, usuario.password, usuario.tipo_usuario,usuario.perfil_foto, usuario.autorizado];
 
             conexion.query(sql, values, function (err, resultado) {
                 if (err) {
@@ -111,45 +111,30 @@ exports.insertarPersona = function(usuario, retornar){
                         }
 
                         // Insertar días de atención y horarios en dias_atencion_medicos
-                        var diasAtencion = usuario.dias_atencion;
+                        var diasAtencionBooleans = usuario.dias_atencion; // Array de booleans
                         var horariosDesde = usuario.horario_desde;
                         var horariosHasta = usuario.horario_hasta;
 
-                        if (Array.isArray(diasAtencion) && diasAtencion.length > 0) {
-                            var sqlDiasAtencion = "INSERT INTO dias_atencion_medicos (id_medico, dia_atencion, horario_desde, horario_hasta) VALUES ";
-                            var placeholders = diasAtencion.map(() => "(?, ?, ?, ?)").join(',');
-                            var valuesDiasAtencion = [];
+                        var sqlDiasAtencion = "INSERT INTO dias_atencion(id_medico, lunes, martes, miercoles, jueves, viernes, horario_desde, horario_hasta) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                        var valuesDiasAtencion = [
+                            resultadoMedico.insertId,
+                            diasAtencionBooleans[0], // lunes
+                            diasAtencionBooleans[1], // martes
+                            diasAtencionBooleans[2], // miercoles
+                            diasAtencionBooleans[3], // jueves
+                            diasAtencionBooleans[4], // viernes
+                            horariosDesde,
+                            horariosHasta
+                        ];
 
-                            // Crear los valores a insertar para cada día de atención y horario
-                            diasAtencion.forEach((dia) => {
-                                valuesDiasAtencion.push(resultadoMedico.insertId, dia, horariosDesde, horariosHasta);
-                            });
-
-                            sqlDiasAtencion += placeholders;
-
-                            conexion.query(sqlDiasAtencion, valuesDiasAtencion, function (err, resultadoDiasAtencion) {
-                                if (err) {
-                                    return conexion.rollback(function () {
-                                        conexion.release();
-                                        return retornar(err);
-                                    });
-                                }
-
-                                conexion.commit(function (err) {
-                                    if (err) {
-                                        return conexion.rollback(function () {
-                                            conexion.release();
-                                            return retornar(err);
-                                        });
-                                    }
-
-                                    console.log('Inserción exitosa en todas las tablas');
+                        conexion.query(sqlDiasAtencion, valuesDiasAtencion, function (err, resultadoDiasAtencion) {
+                            if (err) {
+                                return conexion.rollback(function () {
                                     conexion.release();
-                                    return retornar(null, resultadoMedico);
+                                    return retornar(err);
                                 });
-                            });
-                        } else {
-                            // Si no hay días de atención, solo confirmamos la transacción del médico
+                            }
+
                             conexion.commit(function (err) {
                                 if (err) {
                                     return conexion.rollback(function () {
@@ -158,11 +143,11 @@ exports.insertarPersona = function(usuario, retornar){
                                     });
                                 }
 
-                                console.log('Inserción exitosa en la tabla medico');
+                                console.log('Inserción exitosa en todas las tablas');
                                 conexion.release();
                                 return retornar(null, resultadoMedico);
                             });
-                        }
+                        });
                     });
                 } else {
                     // Si no es un médico, confirmamos la transacción del usuario normal
@@ -182,8 +167,8 @@ exports.insertarPersona = function(usuario, retornar){
             });
         });
     });
-
 }
+
 
 exports.AutorizacionUsuario = function(usuario, respuesta){
     conectar();
