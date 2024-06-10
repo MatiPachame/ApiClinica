@@ -85,7 +85,7 @@ exports.insertarPersona = function(usuario, retornar){
                 return retornar(err);
             }
 
-            var sql = "INSERT INTO usuario (nombre, apellido, mail, fec_nac, usuario, password, tipo_usuario,perfil_foto, autorizado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            var sql = "INSERT INTO usuario (nombre, apellido, mail, fec_nac, usuario, password, tipo_usuario ,perfil_foto ,autorizado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             var values = [usuario.nombre, usuario.apellido, usuario.mail, usuario.nacimiento, usuario.usuario, usuario.password, usuario.tipo_usuario,usuario.perfil_foto, usuario.autorizado];
 
             conexion.query(sql, values, function (err, resultado) {
