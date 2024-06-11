@@ -79,6 +79,7 @@ exports.insertarPersona = function(usuario, retornar){
             return retornar(err);
         }
 
+        
         conexion.beginTransaction(function (err) {
             if (err) {
                 conexion.release();
