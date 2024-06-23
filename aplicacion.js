@@ -74,6 +74,24 @@ exports.autorizacion = function(usuario,res){
 
 }
 
+exports.insertarTurno = function (usuario, res) {
+
+        db.nuevoTurno(usuario, datos => {
+            res.json(datos);
+        });
+}
+
+exports.buscarTurnos = async(req,res) =>{
+    
+    try {
+        const data = await db.turnosTomados();
+        res.json(data); // Enviar datos como JSON
+      } catch (error) {
+        res.status(500).json({ error: 'Error al obtener los datos' }); // Enviar error como JSON
+      }
+
+};
+
 exports.borrar = function(usuario, res){
 
     db.borrarPersona( usuario, datos => {res.json(datos)});

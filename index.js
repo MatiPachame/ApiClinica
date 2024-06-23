@@ -81,6 +81,20 @@ app.post('/autorizacion_usuario' , (req,res) => {
 });
 
 
+app.post('/tomar_turno', (req, res) => {
+
+    var usuario = req.body;
+
+    aplicacion.insertarTurno(usuario, res);
+    
+})
+
+app.post('/get_turnos_tomados', (req, res) => {
+
+    aplicacion.buscarTurnos(req,res);
+
+});
+
 // app.post('/leer/', (req,res)  => {
 
 

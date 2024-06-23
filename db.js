@@ -294,5 +294,31 @@ exports.buscarMedicosDisponibilidad = function() {
     });
 };
 
+exports.nuevoTurno = function(usuario, respuesta){
+    conectar();
+
+    const sql = "INSERT into turnos (id_usuario, id_medico, hora ,fecha ,aceptado) VALUES (?,?,?,?,?);";
+    const values = [usuario.id_usuario, usuario.id_medico, usuario.hora, usuario.fecha, usuario.aceptado];
+
+    conexion.query(sql, values, function (err, resultado) {
+        if(err) throw err;
+        console.log(resultado);
+        respuesta(resultado);
+    });
+};
+
+exports.turnosTomados = function(){
+    conectar();
+
+    return new Promise((resolve, reject) => {
+        conexion.query("SELECT * FROM turnos", (error,results) =>{
+            if(error){
+                return reject;
+            }
+             resolve(results);   
+        });
+    });
+   
+}
 
 
