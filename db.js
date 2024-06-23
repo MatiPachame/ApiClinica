@@ -5,19 +5,55 @@ var mysql = require('mysql');
 var conexion = mysql.createConnection({
     host: 'mysql.db.mdbgo.com',
     user: 'matipachame_matipachame',
-    password: 'ITBpachame2024!**',
+    password: 'Matipachame2024!',
     database: 'matipachame_clinica',
     port: 3306
 });
 
 
-var pool = mysql.createPool({
+//  var pool = mysql.createPool({
+//      host: 'mysql.db.mdbgo.com',
+//      user: 'matipachame_matipachame',
+//      password: 'ITBpachame2024!**',
+//      database: 'matipachame_clinica',
+//      port: 3306
+//  });
+
+const pool = mysql.createPool({
+    connectionLimit: 10, // Límite de conexiones en el pool
     host: 'mysql.db.mdbgo.com',
     user: 'matipachame_matipachame',
-    password: 'ITBpachame2024!**',
+    password: 'Matipachame2024!',
     database: 'matipachame_clinica',
     port: 3306
 });
+
+// Función para manejar conexiones y errores
+function handleDisconnect() {
+    pool.getConnection((err, connection) => {
+        if (err) {
+            console.error('Error connecting to database:', err);
+            setTimeout(handleDisconnect, 2000); // Reintentar conexión después de 2 segundos
+        }
+
+        if (connection) {
+            connection.release();
+        }
+
+        // Manejar errores de conexión durante la ejecución
+        pool.on('error', (err) => {
+            console.error('Database error:', err);
+            if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+                handleDisconnect();
+            } else {
+                throw err;
+            }
+        });
+    });
+}
+
+// Llamar a la función para iniciar la conexión y manejar la desconexión
+handleDisconnect();
 
 function conectar(){
 
@@ -74,10 +110,10 @@ exports.verificarUsuarioExistente = function (usuario, callback) {
 };
 
 exports.insertarPersona = function(usuario, retornar){
-    pool.getConnection(function (err, conexion) {
-        if (err) {
-            return retornar(err);
-        }
+     pool.getConnection(function (err, conexion) {
+         if (err) {
+             return retornar(err);
+         }
 
         
         conexion.beginTransaction(function (err) {
@@ -184,4 +220,20 @@ exports.AutorizacionUsuario = function(usuario, respuesta){
         respuesta(resultado);
     });
 }
+
+exports.buscarMedicosDisponibilidad = function(){
+    conectar();
+
+    return new Promise((resolve, reject) => {
+        conexion.query("SELECT DISTINCT m.id_medico,u.nombre, u.apellido, u.perfil_foto,  m.especialidad, d.lunes, d.martes, d.miercoles, d.jueves, d.viernes, d.horario_desde, d.horario_hasta FROM usuario as u, medico as m, dias_atencion as d WHERE u.tipo_usuario = 2 AND u.autorizado = 1 and m.id_medico = d.id_medico AND u.id = m.id_usuario order by m.id_medico", (error,results) =>{
+            if(error){
+                return reject;
+            }
+             resolve(results);   
+        });
+    });
+   
+}
+
+
 

@@ -44,6 +44,13 @@ app.post('/get_usuarios_autorizar', (req, res) => {
 
 });
 
+//POST para obtener disponibilidad de medicos
+app.post('/get_disponibilidad', (req, res) => {
+
+    aplicacion.buscarDisponibilidad(req,res);
+
+});
+
 //POST para login de usuarios
 app.post('/login/', (req,res)  => {
 

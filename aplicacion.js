@@ -38,6 +38,17 @@ exports.buscarUsuarios = async(req,res) =>{
 
 };
 
+exports.buscarDisponibilidad = async(req,res) =>{
+    
+    try {
+        const data = await db.buscarMedicosDisponibilidad();
+        res.json(data); // Enviar datos como JSON
+      } catch (error) {
+        res.status(500).json({ error: 'Error al obtener los datos' }); // Enviar error como JSON
+      }
+
+};
+
 exports.insertar = function (usuario, res) {
 
     db.verificarUsuarioExistente(usuario, function (err, existe) {
