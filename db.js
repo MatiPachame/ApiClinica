@@ -221,19 +221,78 @@ exports.AutorizacionUsuario = function(usuario, respuesta){
     });
 }
 
-exports.buscarMedicosDisponibilidad = function(){
+// exports.buscarMedicosDisponibilidad = function(){
+//     conectar();
+
+//     return new Promise((resolve, reject) => {
+//         conexion.query("SELECT DISTINCT m.id_medico,u.nombre, u.apellido, u.perfil_foto,  m.especialidad, d.lunes, d.martes, d.miercoles, d.jueves, d.viernes, d.horario_desde, d.horario_hasta FROM usuario as u, medico as m, dias_atencion as d WHERE u.tipo_usuario = 2 AND u.autorizado = 1 and m.id_medico = d.id_medico AND u.id = m.id_usuario order by m.id_medico", (error,results) =>{
+//             if(error){
+//                 return reject;
+//             }
+//              resolve(results);   
+//         });
+//     });
+   
+// }
+
+exports.buscarMedicosDisponibilidad = function() {
     conectar();
 
     return new Promise((resolve, reject) => {
-        conexion.query("SELECT DISTINCT m.id_medico,u.nombre, u.apellido, u.perfil_foto,  m.especialidad, d.lunes, d.martes, d.miercoles, d.jueves, d.viernes, d.horario_desde, d.horario_hasta FROM usuario as u, medico as m, dias_atencion as d WHERE u.tipo_usuario = 2 AND u.autorizado = 1 and m.id_medico = d.id_medico AND u.id = m.id_usuario order by m.id_medico", (error,results) =>{
-            if(error){
-                return reject;
+        const query = `
+            SELECT DISTINCT 
+                m.id_medico, 
+                u.nombre, 
+                u.apellido, 
+                u.perfil_foto,  
+                m.especialidad, 
+                d.lunes, 
+                d.martes, 
+                d.miercoles, 
+                d.jueves, 
+                d.viernes, 
+                d.horario_desde, 
+                d.horario_hasta 
+            FROM 
+                usuario AS u, 
+                medico AS m, 
+                dias_atencion AS d 
+            WHERE 
+                u.tipo_usuario = 2 
+                AND u.autorizado = 1 
+                AND m.id_medico = d.id_medico 
+                AND u.id = m.id_usuario 
+            ORDER BY 
+                m.id_medico
+        `;
+        
+        conexion.query(query, (error, results) => {
+            if (error) {
+                return reject(error);
             }
-             resolve(results);   
+            
+            // Procesar los resultados para incluir los días en un array
+            const processedResults = results.map(result => ({
+                id_medico: result.id_medico,
+                nombre: result.nombre,
+                apellido: result.apellido,
+                perfil_foto: result.perfil_foto,
+                especialidad: result.especialidad,
+                dias_atencion: [
+                    result.lunes,
+                    result.martes,
+                    result.miercoles,
+                    result.jueves,
+                    result.viernes
+                ],
+                horario_desde: result.horario_desde,
+                horario_hasta: result.horario_hasta
+            }));
+
+            resolve(processedResults);
         });
     });
-   
-}
+};
 
 
 
