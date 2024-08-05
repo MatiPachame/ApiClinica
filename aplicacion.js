@@ -15,11 +15,29 @@ exports.leer = function(usuario,res){
 
 
 
+// function validarusuario(datos, usuario) {
+//     for (i = 0; i < datos.length; i++) {
+//         element = datos[i];
+//         if (element.usuario == usuario.usuario && element.password == usuario.password)
+//             return element;
+
+//     };
+
+//     return null;
+
+// }
+
+
+//Agregando JWT
 function validarusuario(datos, usuario) {
     for (i = 0; i < datos.length; i++) {
         element = datos[i];
-        if (element.usuario == usuario.usuario && element.password == usuario.password)
-            return element;
+        if (element.usuario == usuario.usuario && element.password == usuario.password){
+
+            return jwt.sign({exp: Marth.floor(Date.now()/1000) + (60 * 60) , data: element},"superclave");
+
+        }
+
 
     };
 
@@ -28,7 +46,7 @@ function validarusuario(datos, usuario) {
 }
 
 exports.buscarUsuarios = async(req,res) =>{
-    
+
     try {
         const data = await db.buscarUsuariosNoAutorizados();
         res.json(data); // Enviar datos como JSON
@@ -39,7 +57,7 @@ exports.buscarUsuarios = async(req,res) =>{
 };
 
 exports.buscarDisponibilidad = async(req,res) =>{
-    
+
     try {
         const data = await db.buscarMedicosDisponibilidad();
         res.json(data); // Enviar datos como JSON
@@ -82,7 +100,7 @@ exports.insertarTurno = function (usuario, res) {
 }
 
 exports.buscarTurnos = async(req,res) =>{
-    
+
     try {
         const data = await db.turnosTomados();
         res.json(data); // Enviar datos como JSON
@@ -95,7 +113,7 @@ exports.buscarTurnos = async(req,res) =>{
 exports.borrar = function(usuario, res){
 
     db.borrarPersona( usuario, datos => {res.json(datos)});
-    
+
 }
 
 function crearJSON(usuario){
@@ -107,7 +125,7 @@ function crearJSON(usuario){
 
 
     }, "clavesupersecreta")}
-    return data;        
+    return data;
 }
 
 

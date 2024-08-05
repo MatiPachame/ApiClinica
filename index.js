@@ -35,6 +35,17 @@ app.get('/prueba/', (req, res) => {
 
     res.send("hola mundo");
 
+    var token = "";
+    if(req.headers.authorization.split(" ")[0] == 'Bearer')
+        token = req.headers.authorization.split(" ")[1];
+
+    var resultado = jwt.verify(token,"superclave", function(err,token){
+        if(err)
+            res.send(err.message);
+
+
+    });
+
 });
 
 //POST de autorizar los usuario medicos o administradores
@@ -54,6 +65,8 @@ app.post('/get_disponibilidad', (req, res) => {
 //POST para login de usuarios
 app.post('/login/', (req,res)  => {
 
+    
+
     var usuario = req.body;
 
     aplicacion.leer(usuario, res);
@@ -67,6 +80,8 @@ app.post('/login/', (req,res)  => {
 app.post('/insertar', (req, res) => {
 
     var usuario = req.body;
+
+    console.log(req.headers.authorization);
 
     aplicacion.insertar(usuario, res);
     
