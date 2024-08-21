@@ -79,7 +79,7 @@ exports.buscarUsuariosNoAutorizados = function(){
     conectar();
 
     return new Promise((resolve, reject) => {
-        conexion.query("SELECT * FROM usuario WHERE tipo_usuario != 1", (error,results) =>{
+        conexion.query("SELECT u.nombre,u.apellido,u.perfil_foto,u.autorizado,m.especialidad FROM usuario as u, medico as m WHERE u.tipo_usuario != 1 AND u.id = m.id_usuario ", (error,results) =>{
             if(error){
                 return reject;
             }

@@ -34,7 +34,13 @@ function validarusuario(datos, usuario) {
         element = datos[i];
         if (element.usuario == usuario.usuario && element.password == usuario.password){
 
-            return jwt.sign({exp: Math.floor(Date.now()/1000) + (60 * 60) , data: element},"superclave");
+            if (element.autorizado == 1){
+                return jwt.sign({exp: Math.floor(Date.now()/1000) + (60 * 60) , data: element},"superclave");
+            } else {
+                return "El usuario no esta autorizado";
+            }
+
+            
 
         }
 
