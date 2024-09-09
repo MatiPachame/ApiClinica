@@ -66,9 +66,23 @@ function conectar(){
 }
 
 
-exports.buscarPersonas= function(respuesta){
+// exports.buscarPersonas= function(respuesta){
+//     conectar();
+//     conexion.query("SELECT * FROM usuario", function(err, resultado, filas){
+//         if(err) throw err;
+//         console.log(resultado);
+//         respuesta(resultado);
+//     });
+// }
+
+
+
+exports.buscarPersonas= function(usuario,respuesta){
     conectar();
-    conexion.query("SELECT * FROM usuario", function(err, resultado, filas){
+
+    const sql =`SELECT u.*, m.* FROM usuario u LEFT JOIN medico m ON u.id = m.id_usuario WHERE u.usuario = ? AND u.password = ?`;
+    const values = [usuario.usuario, usuario.password];
+    conexion.query(sql, values, function(err, resultado, filas){
         if(err) throw err;
         console.log(resultado);
         respuesta(resultado);
@@ -79,7 +93,7 @@ exports.buscarUsuariosNoAutorizados = function(){
     conectar();
 
     return new Promise((resolve, reject) => {
-        conexion.query("SELECT u.nombre,u.apellido,u.perfil_foto,u.autorizado,m.especialidad FROM usuario as u, medico as m WHERE u.tipo_usuario != 1 AND u.id = m.id_usuario ", (error,results) =>{
+        conexion.query("SELECT u.id,u.nombre,u.apellido,u.perfil_foto,u.autorizado,m.especialidad FROM usuario as u, medico as m WHERE u.tipo_usuario != 1 AND u.id = m.id_usuario ", (error,results) =>{
             if(error){
                 return reject;
             }
@@ -210,8 +224,8 @@ exports.insertarPersona = function(usuario, retornar){
 exports.AutorizacionUsuario = function(usuario, respuesta){
     conectar();
 
-    const sql = "UPDATE usuario SET autorizado = ? WHERE usuario = ? AND password = ?;";
-    const values = [usuario.autorizado, usuario.usuario, usuario.password];
+    const sql = "UPDATE usuario SET autorizado = ? WHERE id = ?;";
+    const values = [usuario.autorizado, usuario.id];
 
 
     conexion.query(sql, values, function (err, resultado) {
@@ -320,5 +334,22 @@ exports.turnosTomados = function(){
     });
    
 }
+
+exports.turnosaTomar = function(usuario, callback){
+    conectar();
+
+    const sql = "SELECT t.* FROM turnos as t WHERE t.id_medico = ?";
+    const values = [usuario.id_medico];
+
+    conexion.query(sql, values, function (err, resultado) {
+        if (err) {
+            callback(err, null); // Llama al callback con el error
+            return;
+        }
+        console.log(resultado);
+        callback(null, resultado); // Llama al callback con el resultado
+    });
+}
+
 
 

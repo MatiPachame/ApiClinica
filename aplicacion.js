@@ -3,45 +3,33 @@ var jwt = require(('jsonwebtoken'));
 
 
 
-exports.leer = function(usuario,res){
+ exports.loginUsuario = function(usuario,res){
 
 
-    db.buscarPersonas(datos => {
+    db.buscarPersonas(usuario,datos => {
         res.json(validarusuario(datos,usuario))
-    } );
-
-}
+     } );
 
 
+ }
 
 
-// function validarusuario(datos, usuario) {
-//     for (i = 0; i < datos.length; i++) {
-//         element = datos[i];
-//         if (element.usuario == usuario.usuario && element.password == usuario.password)
-//             return element;
-
-//     };
-
-//     return null;
-
-// }
 
 
 //Agregando JWT
-function validarusuario(datos, usuario) {
-    for (i = 0; i < datos.length; i++) {
-        element = datos[i];
-        if (element.usuario == usuario.usuario && element.password == usuario.password){
-            return jwt.sign({exp: Math.floor(Date.now()/1000) + (60 * 60) , data: element},"superclave");
-        }
+
+  function validarusuario(datos, usuario) {
+      for (let i = 0; i < datos.length; i++) {
+          let element = datos[i];
+          if (element.usuario == usuario.usuario && element.password == usuario.password) {
+              
+             return jwt.sign({ exp: Math.floor(Date.now()/1000) + (60 * 60), data: element }, "superclave");
+                 
+          }
+      }
+  }
 
 
-    };
-
-    return null;
-
-}
 
 exports.buscarUsuarios = async(req,res) =>{
 
@@ -106,6 +94,16 @@ exports.buscarTurnos = async(req,res) =>{
         res.status(500).json({ error: 'Error al obtener los datos' }); // Enviar error como JSON
       }
 
+};
+
+exports.buscarTurnosaTomar = (usuario, res) => {
+    db.turnosaTomar(usuario, (err, data) => {
+        if (err) {
+            res.status(500).json({ error: 'Error al obtener los datos' });
+        } else {
+            res.json(data);
+        }
+    });
 };
 
 exports.borrar = function(usuario, res){

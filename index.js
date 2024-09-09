@@ -69,7 +69,7 @@ app.post('/login/', (req,res)  => {
 
     var usuario = req.body;
 
-    aplicacion.leer(usuario, res);
+    aplicacion.loginUsuario(usuario, res);
 
 
     console.log(res);
@@ -108,6 +108,14 @@ app.post('/tomar_turno', (req, res) => {
 app.post('/get_turnos_tomados', (req, res) => {
 
     aplicacion.buscarTurnos(req,res);
+
+});
+
+app.post('/get_turnos', (req, res) => {
+
+    var usuario = req.body;
+
+    aplicacion.buscarTurnosaTomar(usuario,res);
 
 });
 
