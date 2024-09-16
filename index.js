@@ -119,6 +119,22 @@ app.post('/get_turnos', (req, res) => {
 
 });
 
+app.post('/aceptar_turno' , (req,res) => {
+
+    var turno = req.body;
+
+    aplicacion.aceptarTurno(turno,res);
+
+});
+
+app.post('/rechazar_turno' , (req,res) => {
+
+    var turno = req.body;
+
+    aplicacion.rechazarTurno(turno,res);
+
+});
+
 // app.post('/leer/', (req,res)  => {
 
 

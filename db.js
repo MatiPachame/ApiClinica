@@ -338,7 +338,7 @@ exports.turnosTomados = function(){
 exports.turnosaTomar = function(usuario, callback){
     conectar();
 
-    const sql = "SELECT t.* FROM turnos as t WHERE t.id_medico = ?";
+    const sql = "SELECT t.*, u.nombre, u.apellido FROM turnos as t, usuario as u WHERE t.id_medico = ? AND u.id = t.id_usuario";
     const values = [usuario.id_medico];
 
     conexion.query(sql, values, function (err, resultado) {
@@ -348,6 +348,34 @@ exports.turnosaTomar = function(usuario, callback){
         }
         console.log(resultado);
         callback(null, resultado); // Llama al callback con el resultado
+    });
+}
+
+exports.aceptarT = function(turno, respuesta){
+    conectar();
+
+    const sql = "UPDATE turnos SET aceptado = 'Aceptado' WHERE id_turno = ?;";
+    const values = [turno.id_turno];
+
+
+    conexion.query(sql, values, function (err, resultado) {
+        if(err) throw err;
+        console.log(resultado);
+        respuesta(resultado);
+    });
+}
+
+exports.rechazarT = function(turno, respuesta){
+    conectar();
+
+    const sql = "DELETE FROM turnos WHERE id_turno = ?;";
+    const values = [turno.id_turno];
+
+
+    conexion.query(sql, values, function (err, resultado) {
+        if(err) throw err;
+        console.log(resultado);
+        respuesta(resultado);
     });
 }
 

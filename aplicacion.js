@@ -112,6 +112,21 @@ exports.borrar = function(usuario, res){
 
 }
 
+exports.aceptarTurno = function(turno,res){
+
+    db.aceptarT(turno, datos => {
+        res.json(datos);
+    });
+
+}
+
+exports.rechazarTurno = function(turno,res){
+
+    db.rechazarT(turno, datos => {
+        res.json(datos);
+    });
+
+}
 function crearJSON(usuario){
 
     data= {data:usuario,token : jwt.sign({
