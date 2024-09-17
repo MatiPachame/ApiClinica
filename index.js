@@ -135,6 +135,22 @@ app.post('/rechazar_turno' , (req,res) => {
 
 });
 
+app.post('/get_mis_turnos' , (req,res) => {
+
+    var usuario = req.body;
+
+    aplicacion.TraerMisTurnos(usuario,res);
+
+});
+
+app.post('/finalizar_turno' , (req,res) => {
+
+    var turno = req.body;
+
+    aplicacion.finalizarTurno(turno,res);
+
+});
+
 // app.post('/leer/', (req,res)  => {
 
 

@@ -127,6 +127,22 @@ exports.rechazarTurno = function(turno,res){
     });
 
 }
+
+exports.TraerMisTurnos = function(usuario,res){
+
+    db.misT(usuario, datos => {
+        res.json(datos);
+    });
+
+}
+
+exports.finalizarTurno = function(turno,res){
+
+    db.finalizarT(turno, datos => {
+        res.json(datos);
+    });
+
+}
 function crearJSON(usuario){
 
     data= {data:usuario,token : jwt.sign({
