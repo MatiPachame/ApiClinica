@@ -395,8 +395,8 @@ exports.misT = function(usuario, respuesta){
 exports.finalizarT = function(turno, respuesta){
     conectar();
 
-    const sql = "UPDATE turnos SET aceptado = 'Finalizado', val_pac = ? WHERE id_turno = ?;";
-    const values = [turno.val_pac, turno.id_turno];
+    const sql = "UPDATE turnos SET aceptado = 'Finalizado', val_pac = ?, comentario_pac = ? WHERE id_turno = ?;";
+    const values = [turno.val_pac,turno.comentario_pac, turno.id_turno];
 
 
     conexion.query(sql, values, function (err, resultado) {
