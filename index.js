@@ -151,6 +151,38 @@ app.post('/finalizar_turno' , (req,res) => {
 
 });
 
+app.post('/get_mis_turnos_paciente' , (req,res) => {
+
+    var usuario = req.body;
+
+    aplicacion.TraerMisTurnosPaciente(usuario,res);
+
+});
+
+app.post('/actualizar_diagnostico' , (req,res) => {
+
+    var turno = req.body;
+
+    aplicacion.actualizarDiagnostico(turno,res);
+
+});
+
+app.post('/historial_paciente' , (req,res) => {
+
+    var usuario = req.body;
+
+    aplicacion.historialPaciente(usuario,res);
+
+});
+
+app.post('/valoracion_paciente' , (req,res) => {
+
+    var turno = req.body;
+
+    aplicacion.valoracionPaciente(turno,res);
+
+});
+
 // app.post('/leer/', (req,res)  => {
 
 

@@ -143,6 +143,38 @@ exports.finalizarTurno = function(turno,res){
     });
 
 }
+
+exports.TraerMisTurnosPaciente = function(usuario,res){
+
+    db.misTPaciente(usuario, datos => {
+        res.json(datos);
+    });
+
+}
+
+exports.actualizarDiagnostico = function(turno,res){
+
+    db.actualizarD(turno, datos => {
+        res.json(datos);
+    });
+
+}
+
+exports.historialPaciente = function(usuario,res){
+
+    db.traerHistorial(usuario, datos => {
+        res.json(datos);
+    });
+
+}
+
+exports.valoracionPaciente = function(turno,res){
+
+    db.actualizarValoracion(turno, datos => {
+        res.json(datos);
+    });
+
+}
 function crearJSON(usuario){
 
     data= {data:usuario,token : jwt.sign({

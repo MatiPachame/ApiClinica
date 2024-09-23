@@ -406,5 +406,62 @@ exports.finalizarT = function(turno, respuesta){
     });
 }
 
+exports.misTPaciente = function(usuario, respuesta){
+    conectar();
+
+    const sql = "SELECT t.*, u.nombre, u.apellido, m.especialidad FROM turnos as t, medico as m, usuario as u WHERE t.id_usuario = ? AND m.id_medico = t.id_medico AND m.id_usuario = u.id AND t.aceptado = 'Aceptado'";
+    const values = [usuario.id,];
+
+
+    conexion.query(sql, values, function (err, resultado) {
+        if(err) throw err;
+        console.log(resultado);
+        respuesta(resultado);
+    });
+}
+
+exports.actualizarD = function(turno, respuesta){
+    conectar();
+
+    const sql = "UPDATE turnos SET diagnostico = ? WHERE id_turno = ?;";
+    const values = [turno.diagnostico, turno.id_turno];
+
+
+    conexion.query(sql, values, function (err, resultado) {
+        if(err) throw err;
+        console.log(resultado);
+        respuesta(resultado);
+    });
+}
+
+exports.traerHistorial = function(usuario, respuesta){
+    conectar();
+
+    const sql = "SELECT t.*, u.nombre, u.apellido, m.especialidad FROM turnos as t, medico as m, usuario as u WHERE t.id_usuario = ? AND m.id_medico = t.id_medico AND m.id_usuario = u.id AND t.aceptado = 'Finalizado'";
+    const values = [usuario.id,];
+
+
+    conexion.query(sql, values, function (err, resultado) {
+        if(err) throw err;
+        console.log(resultado);
+        respuesta(resultado);
+    });
+}
+
+exports.actualizarValoracion = function(turno, respuesta){
+    conectar();
+
+    const sql = "UPDATE turnos SET val_med = ?, comentario_med = ? WHERE id_turno = ?;";
+    const values = [turno.val_med,turno.comentario_med, turno.id_turno];
+
+
+    conexion.query(sql, values, function (err, resultado) {
+        if(err) throw err;
+        console.log(resultado);
+        respuesta(resultado);
+    });
+}
+
+
 
 
