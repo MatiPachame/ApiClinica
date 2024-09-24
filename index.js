@@ -183,6 +183,16 @@ app.post('/valoracion_paciente' , (req,res) => {
 
 });
 
+app.post('/traer_puntuaciones' , (req,res) => {
+
+    // var turno = req.body;
+
+    aplicacion.traerPuntuaciones(res);
+
+});
+
+
+
 // app.post('/leer/', (req,res)  => {
 
 

@@ -175,6 +175,14 @@ exports.valoracionPaciente = function(turno,res){
     });
 
 }
+
+exports.traerPuntuaciones = function(res){
+
+    db.puntuacionesMedicos(datos => {
+        res.json(datos);
+    });
+
+}
 function crearJSON(usuario){
 
     data= {data:usuario,token : jwt.sign({

@@ -462,6 +462,18 @@ exports.actualizarValoracion = function(turno, respuesta){
     });
 }
 
+exports.puntuacionesMedicos = function(respuesta){
+    conectar();
+
+    const sql = "SELECT t.id_medico, u.nombre, u.apellido, m.especialidad, AVG(t.val_med) as val_med FROM usuario as u, medico as m, turnos as t WHERE t.id_medico = m.id_medico AND m.id_usuario = u.id GROUP BY t.id_medico;";
+
+    conexion.query(sql, function (err, resultado) {
+        if(err) throw err;
+        console.log(resultado);
+        respuesta(resultado);
+    });
+}
+
 
 
 
